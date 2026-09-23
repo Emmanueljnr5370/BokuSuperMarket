@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongose = require('mongoose');
 
-const  productSchema = new mongoose.Schema({
+const  productSchema = new mongose.Schema({
     name: {
         type: String,
         required: true
@@ -21,8 +21,16 @@ const  productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    timestamps: true // Date created and Date uptdated at
-});
+    color: {
+        type: Number
+    }
+},
+
+{timestamps: true} // Date created and Date uptdated at
+
+);
           
 //Create model from scehema
-const Product = mongoose.model('Prouct', 'productSchema')
+const Product = mongose.model('Product', productSchema)
+
+module.exports = Product; //export the models to used in other files
