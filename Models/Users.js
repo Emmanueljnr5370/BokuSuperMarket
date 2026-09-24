@@ -25,13 +25,13 @@ const userSchema = new mongose.Schema({
     },
     role: {
         type: String,
-        email: ['admin', 'user'],
+        enum: [ 'user', 'superadmin', 'storekeeper', 'salesperson'],
         default: 'user'
     },
-    hasAtm: {
+    HasAdminAccess: {
         type: Boolean,
         default: false
-    },
+    }
 
 },
 {timestamps: true} //Date created and Date Modified or updated
@@ -39,3 +39,4 @@ const userSchema = new mongose.Schema({
 
 // Create Model from schemas
 const User = mongose.model('User', userSchema);
+module.exports = User;
