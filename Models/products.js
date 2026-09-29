@@ -22,7 +22,7 @@ const  productSchema = new mongose.Schema({
         required: true
     },
     color: {
-        type: Number
+        type: String
     }
 },
 

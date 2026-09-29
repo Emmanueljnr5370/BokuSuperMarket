@@ -26,7 +26,7 @@ const userSchema = new mongose.Schema({
     role: {
         type: String,
         enum: [ 'user', 'superadmin', 'storekeeper', 'salesperson'],
-        default: 'user'
+        default: 'salesperson'
     },
     HasAdminAccess: {
         type: Boolean,
