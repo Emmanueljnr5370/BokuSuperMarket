@@ -1,14 +1,66 @@
 const Product = require('../Models/Products');
+const upload = require('../Middleware/upload');
+const sendEmail = require('../Middleware/emailsender');
 
 //Create a New Product
 exports.createProduct = async (req, res) => {
     try {
+
+        //check if all required fields are provided
+        if (!req.body.name || !req.body.size || !req.body.description || !req.body.price || !req.body.quantity || !req.body.color) {
+            return res.status(400).json({ message: 'Please provide all required fields' });
+        }
         const { name, size, description, price, quantity, color } = req.body;
         const product = new Product({name, size, description, price, quantity, color });
+
+
+        await product.save();
+
+        //generate otp
+        const otp = Math.floor(100000 + Math.random() * 900000); // generate a 6 digit otp 
+
+        //send email notification to the admin that a product has been created
+        const subject = 'New Product Created';
+        const text = `A new product has been created here is your otp: ${otp}\nName: ${name}\nSize: ${size}\nDescription: ${description}\nPrice: ${price}\nQuantity: ${quantity}\nColor: ${color}`;
+
+        await sendEmail('emmanueltom5371@gmail.com', subject, text);
+
+        // Send response
+        res.status(201).json({ message: 'Product Created Successfully', product });
+    } catch (error) {
+        res.status(500).json({message: 'Error creating product', error: error.message });
+    }
+};
+
+//Create a product with image upload
+exports.createProductWithImage = async (req, res) => {
+    try {
+        //check if all required fields are provided
+        if (!req.body.name || !req.body.size || !req.body.description || !req.body.price || !req.body.quantity || !req.body.color) {
+            return res.status(400).json({ message: 'Please provide all required fields' });
+        }
+
+        const { name, size, description, price, quantity, color } = req.body;
+
+        //check if file is uploaded
+        if (!req.file) {
+            return res.status(400).json({ message: 'Please upload an image' });
+        }
+
+        const product = new Product({
+            name,
+            size,
+            description,
+            price,
+            quantity,
+            color,
+            image: req.file.path //save the image path to the database
+        });
+
         await product.save();
         res.status(201).json({ message: 'Product Created Successfully', product });
     } catch (error) {
-        res.status(500).json({message: 'Error creating product', erroe: error.message });
+        res.status(500).json({ message: 'Error Creating Product', error: error.message });
     }
 };
 

@@ -5,13 +5,17 @@ const { protect } = require('../Middleware/auth');
 //import authorization middleware
 const { authorize } = require('../Middleware/role');
 
+// Import upload middleware
+const upload = require('../Middleware/upload');
+
 const router = express.Router(); //
 
 //import the product controller
 const productController = require('../Controllers/ProductController');
 
 // define the routes
-router.post('/createproduct', protect, authorize('superadmin'), productController.createProduct);
+router.post('/createproduct', protect, productController.createProduct);
+router.post('/createproductwithimage', protect, upload.single('image'), productController.createProductWithImage)
 router.get("/getallproduct", protect, authorize('storekeeper'), productController.getAllproducts);
 router.get('/getproductbyid/:id', protect, productController.getProductBYId);
 router.put('/updateproduct/:id', protect, productController.updateProduct);

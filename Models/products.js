@@ -23,7 +23,12 @@ const  productSchema = new mongose.Schema({
     },
     color: {
         type: String
+    },
+    image: {
+        type: String,
+        required: false
     }
+
 },
 
 {timestamps: true} // Date created and Date uptdated at
