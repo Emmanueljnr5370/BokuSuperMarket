@@ -1,4 +1,4 @@
-const Product = require('../Models/Products');
+const Product = require("../Models/Products.js");
 const upload = require('../Middleware/upload');
 const sendEmail = require('../Middleware/emailsender');
 
